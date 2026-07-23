@@ -14,20 +14,25 @@ Each level includes the vulnerable contract, an exploit test, and a write-up exp
 | No. | Level | Key topics | Write-up | Test |
 | :---: | :--- | :--- | :---: | :---: |
 | 01 | Fallback | `receive`, access control, low-level `call` | [EN](notes/en/01_Fallback.md) · [KO](notes/ko/01_Fallback.md) | Passing |
+| 02 | Fallout | constructor naming, initialization, multi-version testing | [EN](notes/en/02_Fallout.md) · [KO](notes/ko/02_Fallout.md) | Passing |
 
 ## Repository Structure
 
 ```text
 .
 ├── src/
-│   └── 01_Fallback.sol       # Original vulnerable Ethernaut contract
+│   ├── 01_Fallback.sol       # Fallback level contract
+│   └── 02_Fallout.sol        # Fallout level contract (Solidity 0.6)
 ├── test/
-│   └── 01_Fallback.t.sol     # Foundry exploit reproduction test
+│   ├── 01_Fallback.t.sol     # Fallback exploit test
+│   └── 02_Fallout.t.sol      # Fallout exploit test
 ├── notes/
 │   ├── en/
-│   │   └── 01_Fallback.md    # English vulnerability write-up
+│   │   ├── 01_Fallback.md    # English Fallback write-up
+│   │   └── 02_Fallout.md     # English Fallout write-up
 │   └── ko/
-│       └── 01_Fallback.md    # Korean vulnerability write-up
+│       ├── 01_Fallback.md    # Korean Fallback write-up
+│       └── 02_Fallout.md     # Korean Fallout write-up
 ├── .github/workflows/
 │   └── test.yml              # GitHub Actions CI
 ├── foundry.lock              # Dependency lock file
@@ -125,6 +130,10 @@ forge test --gas-report
 - Every write-up provides links to both language versions.
 - The vulnerable level logic is kept intact; explanatory comments and exploit tests are maintained separately.
 
+### Legacy Compiler Compatibility
+
+Legacy Ethernaut contracts retain their original Solidity versions. Modern tests avoid importing incompatible source files directly: they deploy the separately compiled legacy artifact with `deployCode()` and interact with it through a minimal Solidity 0.8 interface.
+
 ## CI
 
 GitHub Actions runs the following checks on every push and pull request:
@@ -138,6 +147,7 @@ GitHub Actions runs the following checks on every push and pull request:
 - Solidity
 - Foundry
 - Forge Standard Library
+- OpenZeppelin Contracts
 - GitHub Actions
 
 ## References

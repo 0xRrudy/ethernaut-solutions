@@ -2,5 +2,10 @@
 src = "src"
 out = "out"
 libs = ["lib"]
+allow_paths = ["lib"]
+
+remappings = [
+    "openzeppelin-contracts-06/=lib/openzeppelin-contracts-06/contracts/"
+]
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options

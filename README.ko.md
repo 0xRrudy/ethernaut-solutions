@@ -14,20 +14,25 @@ OpenZeppelin의 [Ethernaut](https://ethernaut.openzeppelin.com/) 워게임을 �
 | 번호 | 레벨 | 핵심 주제 | 풀이 | 테스트 |
 | :---: | :--- | :--- | :---: | :---: |
 | 01 | Fallback | `receive`, 접근 제어, 저수준 `call` | [EN](notes/en/01_Fallback.md) · [KO](notes/ko/01_Fallback.md) | 통과 |
+| 02 | Fallout | 생성자 이름, 초기화, 다중 버전 테스트 | [EN](notes/en/02_Fallout.md) · [KO](notes/ko/02_Fallout.md) | 통과 |
 
 ## 저장소 구조
 
 ```text
 .
 ├── src/
-│   └── 01_Fallback.sol       # Ethernaut 원본 취약 컨트랙트
+│   ├── 01_Fallback.sol       # Fallback 레벨 컨트랙트
+│   └── 02_Fallout.sol        # Fallout 레벨 컨트랙트 (Solidity 0.6)
 ├── test/
-│   └── 01_Fallback.t.sol     # Foundry 공격 재현 테스트
+│   ├── 01_Fallback.t.sol     # Fallback 공격 테스트
+│   └── 02_Fallout.t.sol      # Fallout 공격 테스트
 ├── notes/
 │   ├── en/
-│   │   └── 01_Fallback.md    # 영문 취약점 분석
+│   │   ├── 01_Fallback.md    # Fallback 영문 분석
+│   │   └── 02_Fallout.md     # Fallout 영문 분석
 │   └── ko/
-│       └── 01_Fallback.md    # 한글 취약점 분석
+│       ├── 01_Fallback.md    # Fallback 한글 분석
+│       └── 02_Fallout.md     # Fallout 한글 분석
 ├── .github/workflows/
 │   └── test.yml              # GitHub Actions CI
 ├── foundry.lock              # 의존성 잠금 파일
@@ -125,6 +130,10 @@ forge test --gas-report
 - 각 풀이 문서에서 영문과 한글 문서를 서로 연결합니다.
 - 취약한 레벨의 로직은 그대로 유지하고 설명 주석과 공격 테스트를 별도로 관리합니다.
 
+### 구버전 컴파일러 호환성
+
+과거 Ethernaut 컨트랙트는 원래 Solidity 버전을 유지합니다. 최신 테스트는 호환되지 않는 소스를 직접 import하지 않고, 별도로 컴파일된 구버전 artifact를 `deployCode()`로 배포한 뒤 최소한의 Solidity 0.8 인터페이스를 통해 호출합니다.
+
 ## CI
 
 GitHub Actions는 push와 pull request마다 다음 검사를 실행합니다.
@@ -138,6 +147,7 @@ GitHub Actions는 push와 pull request마다 다음 검사를 실행합니다.
 - Solidity
 - Foundry
 - Forge Standard Library
+- OpenZeppelin Contracts
 - GitHub Actions
 
 ## 참고 자료
