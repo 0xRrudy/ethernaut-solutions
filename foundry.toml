@@ -8,4 +8,8 @@ remappings = [
     "openzeppelin-contracts-06/=lib/openzeppelin-contracts-06/contracts/"
 ]
 
+fs_permissions = [
+    { access = "read-write", path = "./.anvil" }
+]
+
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options

