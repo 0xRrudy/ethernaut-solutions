@@ -16,6 +16,7 @@ OpenZeppelin의 [Ethernaut](https://ethernaut.openzeppelin.com/) 워게임을 �
 | 01 | Fallback | `receive`, 접근 제어, 저수준 `call` | [EN](notes/en/01_Fallback.md) · [KO](notes/ko/01_Fallback.md) | 통과 |
 | 02 | Fallout | 생성자 이름, 초기화, 다중 버전 테스트 | [EN](notes/en/02_Fallout.md) · [KO](notes/ko/02_Fallout.md) | 통과 |
 | 03 | Coin Flip | 예측 가능한 난수, `blockhash`, 단위 테스트, Anvil | [EN](notes/en/03_CoinFlip.md) · [KO](notes/ko/03_CoinFlip.md) | 통과 |
+| 04 | Telephone | `tx.origin`, `msg.sender`, 호출 체인 | [EN](notes/en/04_Telephone.md) · [KO](notes/ko/04_Telephone.md) | 통과 |
 
 ## 저장소 구조
 
@@ -25,12 +26,15 @@ OpenZeppelin의 [Ethernaut](https://ethernaut.openzeppelin.com/) 워게임을 �
 │   ├── 01_Fallback.sol       # Fallback 레벨 컨트랙트
 │   ├── 02_Fallout.sol        # Fallout 레벨 컨트랙트 (Solidity 0.6)
 │   ├── 03_CoinFlip.sol       # Coin Flip 레벨 컨트랙트
+│   ├── 04_Telephone.sol      # Telephone 레벨 컨트랙트
 │   └── solvers/
-│       └── 03_CoinFlipSolver.sol
+│       ├── 03_CoinFlipSolver.sol
+│       └── 04_TelephoneSolver.sol
 ├── test/
 │   ├── 01_Fallback.t.sol     # Fallback 풀이 테스트
 │   ├── 02_Fallout.t.sol      # Fallout 풀이 테스트
-│   └── 03_CoinFlip.t.sol     # Coin Flip 솔버 테스트
+│   ├── 03_CoinFlip.t.sol     # Coin Flip 솔버 테스트
+│   └── 04_Telephone.t.sol    # Telephone 풀이 테스트
 ├── script/
 │   ├── LocalAnvil.s.sol      # 로컬 체인 공통 안전 검사
 │   └── 03_CoinFlip/
@@ -40,11 +44,13 @@ OpenZeppelin의 [Ethernaut](https://ethernaut.openzeppelin.com/) 워게임을 �
 │   ├── en/
 │   │   ├── 01_Fallback.md    # Fallback 영문 분석
 │   │   ├── 02_Fallout.md     # Fallout 영문 분석
-│   │   └── 03_CoinFlip.md    # Coin Flip 영문 분석
+│   │   ├── 03_CoinFlip.md    # Coin Flip 영문 분석
+│   │   └── 04_Telephone.md   # Telephone 영문 분석
 │   └── ko/
 │       ├── 01_Fallback.md    # Fallback 한글 분석
 │       ├── 02_Fallout.md     # Fallout 한글 분석
-│       └── 03_CoinFlip.md    # Coin Flip 한글 분석
+│       ├── 03_CoinFlip.md    # Coin Flip 한글 분석
+│       └── 04_Telephone.md   # Telephone 한글 분석
 ├── .github/workflows/
 │   └── test.yml              # GitHub Actions CI
 ├── Makefile                  # 테스트 및 선택적 Anvil 실행 명령

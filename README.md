@@ -16,6 +16,7 @@ Each level includes the original challenge contract, an automated test, and a wr
 | 01 | Fallback | `receive`, access control, low-level `call` | [EN](notes/en/01_Fallback.md) · [KO](notes/ko/01_Fallback.md) | Passing |
 | 02 | Fallout | constructor naming, initialization, multi-version testing | [EN](notes/en/02_Fallout.md) · [KO](notes/ko/02_Fallout.md) | Passing |
 | 03 | Coin Flip | predictable randomness, `blockhash`, unit-test simulation, Anvil | [EN](notes/en/03_CoinFlip.md) · [KO](notes/ko/03_CoinFlip.md) | Passing |
+| 04 | Telephone | `tx.origin`, `msg.sender`, call chains | [EN](notes/en/04_Telephone.md) · [KO](notes/ko/04_Telephone.md) | Passing |
 
 ## Repository Structure
 
@@ -25,12 +26,15 @@ Each level includes the original challenge contract, an automated test, and a wr
 │   ├── 01_Fallback.sol       # Fallback level contract
 │   ├── 02_Fallout.sol        # Fallout level contract (Solidity 0.6)
 │   ├── 03_CoinFlip.sol       # Coin Flip level contract
+│   ├── 04_Telephone.sol      # Telephone level contract
 │   └── solvers/
-│       └── 03_CoinFlipSolver.sol
+│       ├── 03_CoinFlipSolver.sol
+│       └── 04_TelephoneSolver.sol
 ├── test/
 │   ├── 01_Fallback.t.sol     # Fallback solution test
 │   ├── 02_Fallout.t.sol      # Fallout solution test
-│   └── 03_CoinFlip.t.sol     # Coin Flip solver test
+│   ├── 03_CoinFlip.t.sol     # Coin Flip solver test
+│   └── 04_Telephone.t.sol    # Telephone solution test
 ├── script/
 │   ├── LocalAnvil.s.sol      # Shared local-chain safety checks
 │   └── 03_CoinFlip/
@@ -40,11 +44,13 @@ Each level includes the original challenge contract, an automated test, and a wr
 │   ├── en/
 │   │   ├── 01_Fallback.md    # English Fallback write-up
 │   │   ├── 02_Fallout.md     # English Fallout write-up
-│   │   └── 03_CoinFlip.md    # English Coin Flip write-up
+│   │   ├── 03_CoinFlip.md    # English Coin Flip write-up
+│   │   └── 04_Telephone.md   # English Telephone write-up
 │   └── ko/
 │       ├── 01_Fallback.md    # Korean Fallback write-up
 │       ├── 02_Fallout.md     # Korean Fallout write-up
-│       └── 03_CoinFlip.md    # Korean Coin Flip write-up
+│       ├── 03_CoinFlip.md    # Korean Coin Flip write-up
+│       └── 04_Telephone.md   # Korean Telephone write-up
 ├── .github/workflows/
 │   └── test.yml              # GitHub Actions CI
 ├── Makefile                  # Tests and optional local Anvil workflow
