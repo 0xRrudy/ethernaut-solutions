@@ -17,6 +17,10 @@ Each level includes the original challenge contract, an automated test, and a wr
 | 02 | Fallout | constructor naming, initialization, multi-version testing | [EN](notes/en/02_Fallout.md) · [KO](notes/ko/02_Fallout.md) | Passing |
 | 03 | Coin Flip | predictable randomness, `blockhash`, unit-test simulation, Anvil | [EN](notes/en/03_CoinFlip.md) · [KO](notes/ko/03_CoinFlip.md) | Passing |
 | 04 | Telephone | `tx.origin`, `msg.sender`, call chains | [EN](notes/en/04_Telephone.md) · [KO](notes/ko/04_Telephone.md) | Passing |
+| 05 | Token | integer underflow, unchecked arithmetic, legacy Solidity | [EN](notes/en/05_Token.md) · [KO](notes/ko/05_Token.md) | Passing |
+| 06 | Delegation | `delegatecall`, fallback, storage context | [EN](notes/en/06_Delegation.md) · [KO](notes/ko/06_Delegation.md) | Passing |
+| 07 | Force | forced ETH, `selfdestruct`, balance assumptions | [EN](notes/en/07_Force.md) · [KO](notes/ko/07_Force.md) | Passing |
+| 08 | Vault | private storage, storage slots, `vm.load` | [EN](notes/en/08_Vault.md) · [KO](notes/ko/08_Vault.md) | Passing |
 
 ## Repository Structure
 
@@ -27,14 +31,23 @@ Each level includes the original challenge contract, an automated test, and a wr
 │   ├── 02_Fallout.sol        # Fallout level contract (Solidity 0.6)
 │   ├── 03_CoinFlip.sol       # Coin Flip level contract
 │   ├── 04_Telephone.sol      # Telephone level contract
+│   ├── 05_Token.sol          # Token level contract (Solidity 0.6)
+│   ├── 06_Delegation.sol     # Delegation level contracts
+│   ├── 07_Force.sol          # Force level contract
+│   ├── 08_Vault.sol          # Vault level contract
 │   └── solvers/
 │       ├── 03_CoinFlipSolver.sol
-│       └── 04_TelephoneSolver.sol
+│       ├── 04_TelephoneSolver.sol
+│       └── 07_ForceSolver.sol
 ├── test/
 │   ├── 01_Fallback.t.sol     # Fallback solution test
 │   ├── 02_Fallout.t.sol      # Fallout solution test
 │   ├── 03_CoinFlip.t.sol     # Coin Flip solver test
-│   └── 04_Telephone.t.sol    # Telephone solution test
+│   ├── 04_Telephone.t.sol    # Telephone solution test
+│   ├── 05_Token.t.sol        # Token solution test
+│   ├── 06_Delegation.t.sol   # Delegation solution test
+│   ├── 07_Force.t.sol        # Force solution test
+│   └── 08_Vault.t.sol        # Vault solution test
 ├── script/
 │   ├── LocalAnvil.s.sol      # Shared local-chain safety checks
 │   └── 03_CoinFlip/
@@ -45,12 +58,20 @@ Each level includes the original challenge contract, an automated test, and a wr
 │   │   ├── 01_Fallback.md    # English Fallback write-up
 │   │   ├── 02_Fallout.md     # English Fallout write-up
 │   │   ├── 03_CoinFlip.md    # English Coin Flip write-up
-│   │   └── 04_Telephone.md   # English Telephone write-up
+│   │   ├── 04_Telephone.md   # English Telephone write-up
+│   │   ├── 05_Token.md       # English Token write-up
+│   │   ├── 06_Delegation.md  # English Delegation write-up
+│   │   ├── 07_Force.md       # English Force write-up
+│   │   └── 08_Vault.md       # English Vault write-up
 │   └── ko/
 │       ├── 01_Fallback.md    # Korean Fallback write-up
 │       ├── 02_Fallout.md     # Korean Fallout write-up
 │       ├── 03_CoinFlip.md    # Korean Coin Flip write-up
-│       └── 04_Telephone.md   # Korean Telephone write-up
+│       ├── 04_Telephone.md   # Korean Telephone write-up
+│       ├── 05_Token.md       # Korean Token write-up
+│       ├── 06_Delegation.md  # Korean Delegation write-up
+│       ├── 07_Force.md       # Korean Force write-up
+│       └── 08_Vault.md       # Korean Vault write-up
 ├── .github/workflows/
 │   └── test.yml              # GitHub Actions CI
 ├── Makefile                  # Tests and optional local Anvil workflow

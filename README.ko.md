@@ -17,6 +17,10 @@ OpenZeppelin의 [Ethernaut](https://ethernaut.openzeppelin.com/) 워게임을 �
 | 02 | Fallout | 생성자 이름, 초기화, 다중 버전 테스트 | [EN](notes/en/02_Fallout.md) · [KO](notes/ko/02_Fallout.md) | 통과 |
 | 03 | Coin Flip | 예측 가능한 난수, `blockhash`, 단위 테스트, Anvil | [EN](notes/en/03_CoinFlip.md) · [KO](notes/ko/03_CoinFlip.md) | 통과 |
 | 04 | Telephone | `tx.origin`, `msg.sender`, 호출 체인 | [EN](notes/en/04_Telephone.md) · [KO](notes/ko/04_Telephone.md) | 통과 |
+| 05 | Token | 정수 언더플로, 검사 없는 산술 연산, 구버전 Solidity | [EN](notes/en/05_Token.md) · [KO](notes/ko/05_Token.md) | 통과 |
+| 06 | Delegation | `delegatecall`, fallback, 스토리지 문맥 | [EN](notes/en/06_Delegation.md) · [KO](notes/ko/06_Delegation.md) | 통과 |
+| 07 | Force | 강제 ETH 전송, `selfdestruct`, 잔액 가정 | [EN](notes/en/07_Force.md) · [KO](notes/ko/07_Force.md) | 통과 |
+| 08 | Vault | private 스토리지, 스토리지 슬롯, `vm.load` | [EN](notes/en/08_Vault.md) · [KO](notes/ko/08_Vault.md) | 통과 |
 
 ## 저장소 구조
 
@@ -27,14 +31,23 @@ OpenZeppelin의 [Ethernaut](https://ethernaut.openzeppelin.com/) 워게임을 �
 │   ├── 02_Fallout.sol        # Fallout 레벨 컨트랙트 (Solidity 0.6)
 │   ├── 03_CoinFlip.sol       # Coin Flip 레벨 컨트랙트
 │   ├── 04_Telephone.sol      # Telephone 레벨 컨트랙트
+│   ├── 05_Token.sol          # Token 레벨 컨트랙트 (Solidity 0.6)
+│   ├── 06_Delegation.sol     # Delegation 레벨 컨트랙트
+│   ├── 07_Force.sol          # Force 레벨 컨트랙트
+│   ├── 08_Vault.sol          # Vault 레벨 컨트랙트
 │   └── solvers/
 │       ├── 03_CoinFlipSolver.sol
-│       └── 04_TelephoneSolver.sol
+│       ├── 04_TelephoneSolver.sol
+│       └── 07_ForceSolver.sol
 ├── test/
 │   ├── 01_Fallback.t.sol     # Fallback 풀이 테스트
 │   ├── 02_Fallout.t.sol      # Fallout 풀이 테스트
 │   ├── 03_CoinFlip.t.sol     # Coin Flip 솔버 테스트
-│   └── 04_Telephone.t.sol    # Telephone 풀이 테스트
+│   ├── 04_Telephone.t.sol    # Telephone 풀이 테스트
+│   ├── 05_Token.t.sol        # Token 풀이 테스트
+│   ├── 06_Delegation.t.sol   # Delegation 풀이 테스트
+│   ├── 07_Force.t.sol        # Force 풀이 테스트
+│   └── 08_Vault.t.sol        # Vault 풀이 테스트
 ├── script/
 │   ├── LocalAnvil.s.sol      # 로컬 체인 공통 안전 검사
 │   └── 03_CoinFlip/
@@ -45,12 +58,20 @@ OpenZeppelin의 [Ethernaut](https://ethernaut.openzeppelin.com/) 워게임을 �
 │   │   ├── 01_Fallback.md    # Fallback 영문 분석
 │   │   ├── 02_Fallout.md     # Fallout 영문 분석
 │   │   ├── 03_CoinFlip.md    # Coin Flip 영문 분석
-│   │   └── 04_Telephone.md   # Telephone 영문 분석
+│   │   ├── 04_Telephone.md   # Telephone 영문 분석
+│   │   ├── 05_Token.md       # Token 영문 분석
+│   │   ├── 06_Delegation.md  # Delegation 영문 분석
+│   │   ├── 07_Force.md       # Force 영문 분석
+│   │   └── 08_Vault.md       # Vault 영문 분석
 │   └── ko/
 │       ├── 01_Fallback.md    # Fallback 한글 분석
 │       ├── 02_Fallout.md     # Fallout 한글 분석
 │       ├── 03_CoinFlip.md    # Coin Flip 한글 분석
-│       └── 04_Telephone.md   # Telephone 한글 분석
+│       ├── 04_Telephone.md   # Telephone 한글 분석
+│       ├── 05_Token.md       # Token 한글 분석
+│       ├── 06_Delegation.md  # Delegation 한글 분석
+│       ├── 07_Force.md       # Force 한글 분석
+│       └── 08_Vault.md       # Vault 한글 분석
 ├── .github/workflows/
 │   └── test.yml              # GitHub Actions CI
 ├── Makefile                  # 테스트 및 선택적 Anvil 실행 명령
