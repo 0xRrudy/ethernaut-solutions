@@ -21,6 +21,8 @@ OpenZeppelin의 [Ethernaut](https://ethernaut.openzeppelin.com/) 워게임을 �
 | 06 | Delegation | `delegatecall`, fallback, 스토리지 문맥 | [EN](notes/en/06_Delegation.md) · [KO](notes/ko/06_Delegation.md) | 통과 |
 | 07 | Force | 강제 ETH 전송, `selfdestruct`, 잔액 가정 | [EN](notes/en/07_Force.md) · [KO](notes/ko/07_Force.md) | 통과 |
 | 08 | Vault | private 스토리지, 스토리지 슬롯, `vm.load` | [EN](notes/en/08_Vault.md) · [KO](notes/ko/08_Vault.md) | 통과 |
+| 09 | King | 푸시 방식 지급, payable 콜백, 상태 가용성 | [EN](notes/en/09_King.md) · [KO](notes/ko/09_King.md) | 통과 |
+| 10 | Re-entrancy | 콜백 실행 순서, CEI, 다중 버전 테스트 | [EN](notes/en/10_Reentrancy.md) · [KO](notes/ko/10_Reentrancy.md) | 통과 |
 
 ## 저장소 구조
 
@@ -35,10 +37,14 @@ OpenZeppelin의 [Ethernaut](https://ethernaut.openzeppelin.com/) 워게임을 �
 │   ├── 06_Delegation.sol     # Delegation 레벨 컨트랙트
 │   ├── 07_Force.sol          # Force 레벨 컨트랙트
 │   ├── 08_Vault.sol          # Vault 레벨 컨트랙트
+│   ├── 09_King.sol           # King 레벨 컨트랙트
+│   ├── 10_Reentrancy.sol     # Re-entrancy 레벨 컨트랙트 (Solidity 0.6)
 │   └── solvers/
 │       ├── 03_CoinFlipSolver.sol
 │       ├── 04_TelephoneSolver.sol
-│       └── 07_ForceSolver.sol
+│       ├── 07_ForceSolver.sol
+│       ├── 09_KingSolver.sol
+│       └── 10_ReentrancySolver.sol
 ├── test/
 │   ├── 01_Fallback.t.sol     # Fallback 풀이 테스트
 │   ├── 02_Fallout.t.sol      # Fallout 풀이 테스트
@@ -47,7 +53,9 @@ OpenZeppelin의 [Ethernaut](https://ethernaut.openzeppelin.com/) 워게임을 �
 │   ├── 05_Token.t.sol        # Token 풀이 테스트
 │   ├── 06_Delegation.t.sol   # Delegation 풀이 테스트
 │   ├── 07_Force.t.sol        # Force 풀이 테스트
-│   └── 08_Vault.t.sol        # Vault 풀이 테스트
+│   ├── 08_Vault.t.sol        # Vault 풀이 테스트
+│   ├── 09_King.t.sol         # King 풀이 테스트
+│   └── 10_Reentrancy.t.sol   # Re-entrancy 풀이 테스트
 ├── script/
 │   ├── LocalAnvil.s.sol      # 로컬 체인 공통 안전 검사
 │   └── 03_CoinFlip/
@@ -62,7 +70,9 @@ OpenZeppelin의 [Ethernaut](https://ethernaut.openzeppelin.com/) 워게임을 �
 │   │   ├── 05_Token.md       # Token 영문 분석
 │   │   ├── 06_Delegation.md  # Delegation 영문 분석
 │   │   ├── 07_Force.md       # Force 영문 분석
-│   │   └── 08_Vault.md       # Vault 영문 분석
+│   │   ├── 08_Vault.md       # Vault 영문 분석
+│   │   ├── 09_King.md        # King 영문 분석
+│   │   └── 10_Reentrancy.md  # Re-entrancy 영문 분석
 │   └── ko/
 │       ├── 01_Fallback.md    # Fallback 한글 분석
 │       ├── 02_Fallout.md     # Fallout 한글 분석
@@ -71,7 +81,9 @@ OpenZeppelin의 [Ethernaut](https://ethernaut.openzeppelin.com/) 워게임을 �
 │       ├── 05_Token.md       # Token 한글 분석
 │       ├── 06_Delegation.md  # Delegation 한글 분석
 │       ├── 07_Force.md       # Force 한글 분석
-│       └── 08_Vault.md       # Vault 한글 분석
+│       ├── 08_Vault.md       # Vault 한글 분석
+│       ├── 09_King.md        # King 한글 분석
+│       └── 10_Reentrancy.md  # Re-entrancy 한글 분석
 ├── .github/workflows/
 │   └── test.yml              # GitHub Actions CI
 ├── Makefile                  # 테스트 및 선택적 Anvil 실행 명령

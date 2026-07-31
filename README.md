@@ -21,6 +21,8 @@ Each level includes the original challenge contract, an automated test, and a wr
 | 06 | Delegation | `delegatecall`, fallback, storage context | [EN](notes/en/06_Delegation.md) · [KO](notes/ko/06_Delegation.md) | Passing |
 | 07 | Force | forced ETH, `selfdestruct`, balance assumptions | [EN](notes/en/07_Force.md) · [KO](notes/ko/07_Force.md) | Passing |
 | 08 | Vault | private storage, storage slots, `vm.load` | [EN](notes/en/08_Vault.md) · [KO](notes/ko/08_Vault.md) | Passing |
+| 09 | King | push payments, payable callbacks, state availability | [EN](notes/en/09_King.md) · [KO](notes/ko/09_King.md) | Passing |
+| 10 | Re-entrancy | callback ordering, CEI, multi-version testing | [EN](notes/en/10_Reentrancy.md) · [KO](notes/ko/10_Reentrancy.md) | Passing |
 
 ## Repository Structure
 
@@ -35,10 +37,14 @@ Each level includes the original challenge contract, an automated test, and a wr
 │   ├── 06_Delegation.sol     # Delegation level contracts
 │   ├── 07_Force.sol          # Force level contract
 │   ├── 08_Vault.sol          # Vault level contract
+│   ├── 09_King.sol           # King level contract
+│   ├── 10_Reentrancy.sol     # Re-entrancy level contract (Solidity 0.6)
 │   └── solvers/
 │       ├── 03_CoinFlipSolver.sol
 │       ├── 04_TelephoneSolver.sol
-│       └── 07_ForceSolver.sol
+│       ├── 07_ForceSolver.sol
+│       ├── 09_KingSolver.sol
+│       └── 10_ReentrancySolver.sol
 ├── test/
 │   ├── 01_Fallback.t.sol     # Fallback solution test
 │   ├── 02_Fallout.t.sol      # Fallout solution test
@@ -47,7 +53,9 @@ Each level includes the original challenge contract, an automated test, and a wr
 │   ├── 05_Token.t.sol        # Token solution test
 │   ├── 06_Delegation.t.sol   # Delegation solution test
 │   ├── 07_Force.t.sol        # Force solution test
-│   └── 08_Vault.t.sol        # Vault solution test
+│   ├── 08_Vault.t.sol        # Vault solution test
+│   ├── 09_King.t.sol         # King solution test
+│   └── 10_Reentrancy.t.sol   # Re-entrancy solution test
 ├── script/
 │   ├── LocalAnvil.s.sol      # Shared local-chain safety checks
 │   └── 03_CoinFlip/
@@ -62,7 +70,9 @@ Each level includes the original challenge contract, an automated test, and a wr
 │   │   ├── 05_Token.md       # English Token write-up
 │   │   ├── 06_Delegation.md  # English Delegation write-up
 │   │   ├── 07_Force.md       # English Force write-up
-│   │   └── 08_Vault.md       # English Vault write-up
+│   │   ├── 08_Vault.md       # English Vault write-up
+│   │   ├── 09_King.md        # English King write-up
+│   │   └── 10_Reentrancy.md  # English Re-entrancy write-up
 │   └── ko/
 │       ├── 01_Fallback.md    # Korean Fallback write-up
 │       ├── 02_Fallout.md     # Korean Fallout write-up
@@ -71,7 +81,9 @@ Each level includes the original challenge contract, an automated test, and a wr
 │       ├── 05_Token.md       # Korean Token write-up
 │       ├── 06_Delegation.md  # Korean Delegation write-up
 │       ├── 07_Force.md       # Korean Force write-up
-│       └── 08_Vault.md       # Korean Vault write-up
+│       ├── 08_Vault.md       # Korean Vault write-up
+│       ├── 09_King.md        # Korean King write-up
+│       └── 10_Reentrancy.md  # Korean Re-entrancy write-up
 ├── .github/workflows/
 │   └── test.yml              # GitHub Actions CI
 ├── Makefile                  # Tests and optional local Anvil workflow
