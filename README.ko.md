@@ -23,6 +23,16 @@ OpenZeppelin의 [Ethernaut](https://ethernaut.openzeppelin.com/) 워게임을 �
 | 08 | Vault | private 스토리지, 스토리지 슬롯, `vm.load` | [EN](notes/en/08_Vault.md) · [KO](notes/ko/08_Vault.md) | 통과 |
 | 09 | King | 푸시 방식 지급, payable 콜백, 상태 가용성 | [EN](notes/en/09_King.md) · [KO](notes/ko/09_King.md) | 통과 |
 | 10 | Re-entrancy | 콜백 실행 순서, CEI, 다중 버전 테스트 | [EN](notes/en/10_Reentrancy.md) · [KO](notes/ko/10_Reentrancy.md) | 통과 |
+| 11 | Elevator | 변경 가능한 콜백, 반복 외부 호출 | [EN](notes/en/11_Elevator.md) · [KO](notes/ko/11_Elevator.md) | 통과 |
+| 12 | Privacy | 스토리지 배치, 패킹, `vm.load` | [EN](notes/en/12_Privacy.md) · [KO](notes/ko/12_Privacy.md) | 통과 |
+| 13 | Gatekeeper One | `gasleft`, 비트 마스크, `tx.origin` | [EN](notes/en/13_GatekeeperOne.md) · [KO](notes/ko/13_GatekeeperOne.md) | 통과 |
+| 14 | Gatekeeper Two | 생성자 코드 크기, XOR, 호출 체인 | [EN](notes/en/14_GatekeeperTwo.md) · [KO](notes/ko/14_GatekeeperTwo.md) | 통과 |
+| 15 | Naught Coin | ERC-20 allowance, 상속된 전송 경로 | [EN](notes/en/15_NaughtCoin.md) · [KO](notes/ko/15_NaughtCoin.md) | 통과 |
+| 16 | Preservation | `delegatecall`, 스토리지 배치 충돌 | [EN](notes/en/16_Preservation.md) · [KO](notes/ko/16_Preservation.md) | 통과 |
+| 17 | Recovery | CREATE 주소, RLP, 컨트랙트 nonce | [EN](notes/en/17_Recovery.md) · [KO](notes/ko/17_Recovery.md) | 통과 |
+| 18 | Magic Number | 생성 코드, 런타임 코드, EVM opcode | [EN](notes/en/18_MagicNumber.md) · [KO](notes/ko/18_MagicNumber.md) | 통과 |
+| 19 | Alien Codex | 배열 언더플로, 스토리지 주소 계산, Solidity 0.5 | [EN](notes/en/19_AlienCodex.md) · [KO](notes/ko/19_AlienCodex.md) | 통과 |
+| 20 | Denial | 가스 전달, 콜백 가용성, EIP-150 | [EN](notes/en/20_Denial.md) · [KO](notes/ko/20_Denial.md) | 통과 |
 
 ## 저장소 구조
 
@@ -39,12 +49,27 @@ OpenZeppelin의 [Ethernaut](https://ethernaut.openzeppelin.com/) 워게임을 �
 │   ├── 08_Vault.sol          # Vault 레벨 컨트랙트
 │   ├── 09_King.sol           # King 레벨 컨트랙트
 │   ├── 10_Reentrancy.sol     # Re-entrancy 레벨 컨트랙트 (Solidity 0.6)
+│   ├── 11_Elevator.sol       # Elevator 레벨 컨트랙트
+│   ├── 12_Privacy.sol        # Privacy 레벨 컨트랙트
+│   ├── 13_GatekeeperOne.sol  # Gatekeeper One 레벨 컨트랙트
+│   ├── 14_GatekeeperTwo.sol  # Gatekeeper Two 레벨 컨트랙트
+│   ├── 15_NaughtCoin.sol     # Naught Coin 레벨 컨트랙트
+│   ├── 16_Preservation.sol   # Preservation 레벨 컨트랙트
+│   ├── 17_Recovery.sol       # Recovery 레벨 컨트랙트
+│   ├── 18_MagicNumber.sol    # Magic Number 레벨 컨트랙트
+│   ├── 19_AlienCodex.sol     # Alien Codex 레벨 컨트랙트 (Solidity 0.5)
+│   ├── 20_Denial.sol         # Denial 레벨 컨트랙트
 │   └── solvers/
 │       ├── 03_CoinFlipSolver.sol
 │       ├── 04_TelephoneSolver.sol
 │       ├── 07_ForceSolver.sol
 │       ├── 09_KingSolver.sol
-│       └── 10_ReentrancySolver.sol
+│       ├── 10_ReentrancySolver.sol
+│       ├── 11_ElevatorSolver.sol
+│       ├── 13_GatekeeperOneSolver.sol
+│       ├── 14_GatekeeperTwoSolver.sol
+│       ├── 16_PreservationSolver.sol
+│       └── 20_DenialSolver.sol
 ├── test/
 │   ├── 01_Fallback.t.sol     # Fallback 풀이 테스트
 │   ├── 02_Fallout.t.sol      # Fallout 풀이 테스트
@@ -55,7 +80,17 @@ OpenZeppelin의 [Ethernaut](https://ethernaut.openzeppelin.com/) 워게임을 �
 │   ├── 07_Force.t.sol        # Force 풀이 테스트
 │   ├── 08_Vault.t.sol        # Vault 풀이 테스트
 │   ├── 09_King.t.sol         # King 풀이 테스트
-│   └── 10_Reentrancy.t.sol   # Re-entrancy 풀이 테스트
+│   ├── 10_Reentrancy.t.sol   # Re-entrancy 풀이 테스트
+│   ├── 11_Elevator.t.sol     # Elevator 풀이 테스트
+│   ├── 12_Privacy.t.sol      # Privacy 풀이 테스트
+│   ├── 13_GatekeeperOne.t.sol # Gatekeeper One 풀이 테스트
+│   ├── 14_GatekeeperTwo.t.sol # Gatekeeper Two 풀이 테스트
+│   ├── 15_NaughtCoin.t.sol   # Naught Coin 풀이 테스트
+│   ├── 16_Preservation.t.sol # Preservation 풀이 테스트
+│   ├── 17_Recovery.t.sol     # Recovery 풀이 테스트
+│   ├── 18_MagicNumber.t.sol  # Magic Number 풀이 테스트
+│   ├── 19_AlienCodex.t.sol   # Alien Codex 풀이 테스트
+│   └── 20_Denial.t.sol       # Denial 풀이 테스트
 ├── script/
 │   ├── LocalAnvil.s.sol      # 로컬 체인 공통 안전 검사
 │   └── 03_CoinFlip/
@@ -72,7 +107,17 @@ OpenZeppelin의 [Ethernaut](https://ethernaut.openzeppelin.com/) 워게임을 �
 │   │   ├── 07_Force.md       # Force 영문 분석
 │   │   ├── 08_Vault.md       # Vault 영문 분석
 │   │   ├── 09_King.md        # King 영문 분석
-│   │   └── 10_Reentrancy.md  # Re-entrancy 영문 분석
+│   │   ├── 10_Reentrancy.md  # Re-entrancy 영문 분석
+│   │   ├── 11_Elevator.md    # Elevator 영문 분석
+│   │   ├── 12_Privacy.md     # Privacy 영문 분석
+│   │   ├── 13_GatekeeperOne.md
+│   │   ├── 14_GatekeeperTwo.md
+│   │   ├── 15_NaughtCoin.md
+│   │   ├── 16_Preservation.md
+│   │   ├── 17_Recovery.md
+│   │   ├── 18_MagicNumber.md
+│   │   ├── 19_AlienCodex.md
+│   │   └── 20_Denial.md
 │   └── ko/
 │       ├── 01_Fallback.md    # Fallback 한글 분석
 │       ├── 02_Fallout.md     # Fallout 한글 분석
@@ -83,7 +128,17 @@ OpenZeppelin의 [Ethernaut](https://ethernaut.openzeppelin.com/) 워게임을 �
 │       ├── 07_Force.md       # Force 한글 분석
 │       ├── 08_Vault.md       # Vault 한글 분석
 │       ├── 09_King.md        # King 한글 분석
-│       └── 10_Reentrancy.md  # Re-entrancy 한글 분석
+│       ├── 10_Reentrancy.md  # Re-entrancy 한글 분석
+│       ├── 11_Elevator.md    # Elevator 한글 분석
+│       ├── 12_Privacy.md     # Privacy 한글 분석
+│       ├── 13_GatekeeperOne.md
+│       ├── 14_GatekeeperTwo.md
+│       ├── 15_NaughtCoin.md
+│       ├── 16_Preservation.md
+│       ├── 17_Recovery.md
+│       ├── 18_MagicNumber.md
+│       ├── 19_AlienCodex.md
+│       └── 20_Denial.md
 ├── .github/workflows/
 │   └── test.yml              # GitHub Actions CI
 ├── Makefile                  # 테스트 및 선택적 Anvil 실행 명령
@@ -210,6 +265,16 @@ Makefile은 `http://127.0.0.1:8545`, 체인 ID `31337`, Anvil의 공개된 첫 �
 ### 구버전 컴파일러 호환성
 
 과거 Ethernaut 컨트랙트는 원래 Solidity 버전을 유지합니다. 최신 테스트는 호환되지 않는 소스를 직접 import하지 않고, 별도로 컴파일된 구버전 artifact를 `deployCode()`로 배포한 뒤 최소한의 Solidity 0.8 인터페이스를 통해 호출합니다.
+
+저장소는 버전별 OpenZeppelin 의존성을 함께 유지합니다.
+
+```text
+openzeppelin-contracts-05/  OpenZeppelin Contracts v2.5.1
+openzeppelin-contracts-06/  OpenZeppelin Contracts v3.4.2
+openzeppelin-contracts-08/  OpenZeppelin Contracts v4.9.6
+```
+
+버전별 remapping을 사용하면 구버전 대상과 최신 Foundry 테스트를 하나의 컴파일러 의존 그래프에 강제로 묶지 않으면서 각 레벨의 원래 컴파일러 제약을 유지할 수 있습니다.
 
 ## CI
 

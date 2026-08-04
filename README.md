@@ -23,6 +23,16 @@ Each level includes the original challenge contract, an automated test, and a wr
 | 08 | Vault | private storage, storage slots, `vm.load` | [EN](notes/en/08_Vault.md) · [KO](notes/ko/08_Vault.md) | Passing |
 | 09 | King | push payments, payable callbacks, state availability | [EN](notes/en/09_King.md) · [KO](notes/ko/09_King.md) | Passing |
 | 10 | Re-entrancy | callback ordering, CEI, multi-version testing | [EN](notes/en/10_Reentrancy.md) · [KO](notes/ko/10_Reentrancy.md) | Passing |
+| 11 | Elevator | mutable callbacks, repeated external calls | [EN](notes/en/11_Elevator.md) · [KO](notes/ko/11_Elevator.md) | Passing |
+| 12 | Privacy | storage layout, packing, `vm.load` | [EN](notes/en/12_Privacy.md) · [KO](notes/ko/12_Privacy.md) | Passing |
+| 13 | Gatekeeper One | `gasleft`, bit masks, `tx.origin` | [EN](notes/en/13_GatekeeperOne.md) · [KO](notes/ko/13_GatekeeperOne.md) | Passing |
+| 14 | Gatekeeper Two | constructor code size, XOR, call chains | [EN](notes/en/14_GatekeeperTwo.md) · [KO](notes/ko/14_GatekeeperTwo.md) | Passing |
+| 15 | Naught Coin | ERC-20 allowances, inherited transfer paths | [EN](notes/en/15_NaughtCoin.md) · [KO](notes/ko/15_NaughtCoin.md) | Passing |
+| 16 | Preservation | `delegatecall`, storage layout collisions | [EN](notes/en/16_Preservation.md) · [KO](notes/ko/16_Preservation.md) | Passing |
+| 17 | Recovery | CREATE addresses, RLP, contract nonces | [EN](notes/en/17_Recovery.md) · [KO](notes/ko/17_Recovery.md) | Passing |
+| 18 | Magic Number | creation code, runtime code, EVM opcodes | [EN](notes/en/18_MagicNumber.md) · [KO](notes/ko/18_MagicNumber.md) | Passing |
+| 19 | Alien Codex | array underflow, storage addressing, Solidity 0.5 | [EN](notes/en/19_AlienCodex.md) · [KO](notes/ko/19_AlienCodex.md) | Passing |
+| 20 | Denial | gas forwarding, callback availability, EIP-150 | [EN](notes/en/20_Denial.md) · [KO](notes/ko/20_Denial.md) | Passing |
 
 ## Repository Structure
 
@@ -39,12 +49,27 @@ Each level includes the original challenge contract, an automated test, and a wr
 │   ├── 08_Vault.sol          # Vault level contract
 │   ├── 09_King.sol           # King level contract
 │   ├── 10_Reentrancy.sol     # Re-entrancy level contract (Solidity 0.6)
+│   ├── 11_Elevator.sol       # Elevator level contract
+│   ├── 12_Privacy.sol        # Privacy level contract
+│   ├── 13_GatekeeperOne.sol  # Gatekeeper One level contract
+│   ├── 14_GatekeeperTwo.sol  # Gatekeeper Two level contract
+│   ├── 15_NaughtCoin.sol     # Naught Coin level contract
+│   ├── 16_Preservation.sol   # Preservation level contracts
+│   ├── 17_Recovery.sol       # Recovery level contracts
+│   ├── 18_MagicNumber.sol    # Magic Number level contract
+│   ├── 19_AlienCodex.sol     # Alien Codex level contract (Solidity 0.5)
+│   ├── 20_Denial.sol         # Denial level contract
 │   └── solvers/
 │       ├── 03_CoinFlipSolver.sol
 │       ├── 04_TelephoneSolver.sol
 │       ├── 07_ForceSolver.sol
 │       ├── 09_KingSolver.sol
-│       └── 10_ReentrancySolver.sol
+│       ├── 10_ReentrancySolver.sol
+│       ├── 11_ElevatorSolver.sol
+│       ├── 13_GatekeeperOneSolver.sol
+│       ├── 14_GatekeeperTwoSolver.sol
+│       ├── 16_PreservationSolver.sol
+│       └── 20_DenialSolver.sol
 ├── test/
 │   ├── 01_Fallback.t.sol     # Fallback solution test
 │   ├── 02_Fallout.t.sol      # Fallout solution test
@@ -55,7 +80,17 @@ Each level includes the original challenge contract, an automated test, and a wr
 │   ├── 07_Force.t.sol        # Force solution test
 │   ├── 08_Vault.t.sol        # Vault solution test
 │   ├── 09_King.t.sol         # King solution test
-│   └── 10_Reentrancy.t.sol   # Re-entrancy solution test
+│   ├── 10_Reentrancy.t.sol   # Re-entrancy solution test
+│   ├── 11_Elevator.t.sol     # Elevator solution test
+│   ├── 12_Privacy.t.sol      # Privacy solution test
+│   ├── 13_GatekeeperOne.t.sol # Gatekeeper One solution test
+│   ├── 14_GatekeeperTwo.t.sol # Gatekeeper Two solution test
+│   ├── 15_NaughtCoin.t.sol   # Naught Coin solution test
+│   ├── 16_Preservation.t.sol # Preservation solution test
+│   ├── 17_Recovery.t.sol     # Recovery solution test
+│   ├── 18_MagicNumber.t.sol  # Magic Number solution test
+│   ├── 19_AlienCodex.t.sol   # Alien Codex solution test
+│   └── 20_Denial.t.sol       # Denial solution test
 ├── script/
 │   ├── LocalAnvil.s.sol      # Shared local-chain safety checks
 │   └── 03_CoinFlip/
@@ -72,7 +107,17 @@ Each level includes the original challenge contract, an automated test, and a wr
 │   │   ├── 07_Force.md       # English Force write-up
 │   │   ├── 08_Vault.md       # English Vault write-up
 │   │   ├── 09_King.md        # English King write-up
-│   │   └── 10_Reentrancy.md  # English Re-entrancy write-up
+│   │   ├── 10_Reentrancy.md  # English Re-entrancy write-up
+│   │   ├── 11_Elevator.md    # English Elevator write-up
+│   │   ├── 12_Privacy.md     # English Privacy write-up
+│   │   ├── 13_GatekeeperOne.md
+│   │   ├── 14_GatekeeperTwo.md
+│   │   ├── 15_NaughtCoin.md
+│   │   ├── 16_Preservation.md
+│   │   ├── 17_Recovery.md
+│   │   ├── 18_MagicNumber.md
+│   │   ├── 19_AlienCodex.md
+│   │   └── 20_Denial.md
 │   └── ko/
 │       ├── 01_Fallback.md    # Korean Fallback write-up
 │       ├── 02_Fallout.md     # Korean Fallout write-up
@@ -83,7 +128,17 @@ Each level includes the original challenge contract, an automated test, and a wr
 │       ├── 07_Force.md       # Korean Force write-up
 │       ├── 08_Vault.md       # Korean Vault write-up
 │       ├── 09_King.md        # Korean King write-up
-│       └── 10_Reentrancy.md  # Korean Re-entrancy write-up
+│       ├── 10_Reentrancy.md  # Korean Re-entrancy write-up
+│       ├── 11_Elevator.md    # Korean Elevator write-up
+│       ├── 12_Privacy.md     # Korean Privacy write-up
+│       ├── 13_GatekeeperOne.md
+│       ├── 14_GatekeeperTwo.md
+│       ├── 15_NaughtCoin.md
+│       ├── 16_Preservation.md
+│       ├── 17_Recovery.md
+│       ├── 18_MagicNumber.md
+│       ├── 19_AlienCodex.md
+│       └── 20_Denial.md
 ├── .github/workflows/
 │   └── test.yml              # GitHub Actions CI
 ├── Makefile                  # Tests and optional local Anvil workflow
@@ -210,6 +265,16 @@ The Makefile accepts only `http://127.0.0.1:8545`, chain ID `31337`, and Anvil's
 ### Legacy Compiler Compatibility
 
 Legacy Ethernaut contracts retain their original Solidity versions. Modern tests avoid importing incompatible source files directly: they deploy the separately compiled legacy artifact with `deployCode()` and interact with it through a minimal Solidity 0.8 interface.
+
+The repository keeps versioned OpenZeppelin dependencies side by side:
+
+```text
+openzeppelin-contracts-05/  OpenZeppelin Contracts v2.5.1
+openzeppelin-contracts-06/  OpenZeppelin Contracts v3.4.2
+openzeppelin-contracts-08/  OpenZeppelin Contracts v4.9.6
+```
+
+The versioned remappings preserve each level's original compiler constraints without forcing legacy targets and modern Foundry tests into one compiler dependency graph.
 
 ## CI
 

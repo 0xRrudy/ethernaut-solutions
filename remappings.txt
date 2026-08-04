@@ -1,2 +1,4 @@
+openzeppelin-contracts-05/=lib/openzeppelin-contracts-05/contracts/
 openzeppelin-contracts-06/=lib/openzeppelin-contracts-06/contracts/
+openzeppelin-contracts-08/=lib/openzeppelin-contracts-08/contracts/
 forge-std/=lib/forge-std/src/

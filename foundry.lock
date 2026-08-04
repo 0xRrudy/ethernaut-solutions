@@ -5,10 +5,22 @@
       "rev": "bf647bd6046f2f7da30d0c2bf435e5c76a780c1b"
     }
   },
+  "lib/openzeppelin-contracts-05": {
+    "tag": {
+      "name": "v2.5.1",
+      "rev": "837828967a9831e4333d5fb9edefb200a357d24d"
+    }
+  },
   "lib/openzeppelin-contracts-06": {
     "tag": {
       "name": "v3.4.2",
       "rev": "8e0296096449d9b1cd7c5631e917330635244c37"
+    }
+  },
+  "lib/openzeppelin-contracts-08": {
+    "tag": {
+      "name": "v4.9.6",
+      "rev": "dc44c9f1a4c3b10af99492eed84f83ed244203f6"
     }
   }
 }
